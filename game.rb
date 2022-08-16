@@ -90,12 +90,11 @@ class Game
     print "\nInput Guess: "
     answer = gets.chomp.downcase
 
-    save if answer == "save"
-    exit if answer == "exit"
-
     until answer.length == 1 && answer.between?("a", "z")
-      puts "Invalid Input, Input Guess: " if answer != "save"
+      puts "Invalid Input, Input Guess: " if answer != "save" && answer != "exit"
       print "Input Guess: " if answer == "save"
+      save if answer == "save"
+      exit if answer == "exit"
       answer = gets.chomp.downcase
     end
 
@@ -120,7 +119,7 @@ class Game
       3.times {puts "###"}
     end
 
-    @already_guessed << answer
+    @already_guessed << answer unless answer == 'exit' || answer == 'save'
   end
 
   def word_display
@@ -131,7 +130,7 @@ class Game
 
   def update_gamestate
     self.instance_variables.each do |instance|
-      @gamestate[instance] = self.instance_variable_get(instance) unless instance == :@gamestate
+      @gamestate[instance] = self.instance_variable_get(instance) unless instance == :@gamestate || instance == :@save_list
     end
   end
 
