@@ -30,8 +30,10 @@ end
 
 class Game
   include Json
+
   attr_reader :filtered_dictionary, :dictionary, :secret_word, :incorrect_guess, :correct_guess, :word_display, :guesses_left
   attr_accessor :gamestate
+
   def initialize (filtered_dictionary = [], secret_word = "", already_guessed = [], guesses_left = 8, word_array = [], gamestate = {})
     @filtered_dictionary = filtered_dictionary
     @secret_word = secret_word
@@ -84,11 +86,16 @@ class Game
   end
 
   def guess_letter
-    print "Input Guess: "
+    print "'exit' ", "'save' ", "'letter'"
+    print "\nInput Guess: "
     answer = gets.chomp.downcase
 
+    save if answer == "save"
+    exit if answer == "exit"
+
     until answer.length == 1 && answer.between?("a", "z")
-      puts "Invalid Input, Input Guess: "
+      puts "Invalid Input, Input Guess: " if answer != "save"
+      print "Input Guess: " if answer == "save"
       answer = gets.chomp.downcase
     end
 
@@ -162,10 +169,12 @@ class Game
         break
       end
 
-      word_display
-      puts "Would you like to save?"
-      answer = gets.chomp.downcase
-      save if answer == "yes" || answer == "y"
+      # word_display
+      # 3.times {puts "###"}
+      # puts "Would you like to save?"
+      # 3.times {puts "###"}
+      # answer = gets.chomp.downcase
+      # save if answer == "yes" || answer == "y"
     end
   end
 
